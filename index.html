@@ -760,6 +760,39 @@ a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none}
   .skill-row{grid-template-columns:11.5rem minmax(0,1fr);gap:1.25rem;align-items:start}
   .skill-cat{padding-top:.3rem}
 }
+
+/* ═════════ Internship certificate (card link + viewer) ═════════ */
+.cert{
+  position:relative;
+  display:flex;align-items:center;gap:clamp(.75rem,.5rem + 1vw,1.1rem);
+  width:100%;margin-bottom:clamp(.9rem,.7rem + .9vw,1.3rem);
+  padding:.7rem clamp(.8rem,.6rem + .8vw,1.1rem) .7rem .7rem;
+  border:0;border-radius:var(--r);
+  background:linear-gradient(180deg,rgba(124,58,237,.08),rgba(124,58,237,.02));
+  box-shadow:0 0 18px rgba(124,58,237,.14),inset 0 1px 0 rgba(255,255,255,.06);
+  color:inherit;font:inherit;text-align:left;cursor:pointer;
+  transition:box-shadow .3s var(--ease),background .3s var(--ease);
+}
+.cert::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;padding:1.5px;
+  background:linear-gradient(135deg,rgba(167,139,250,.85),rgba(124,58,237,.22) 40%,rgba(212,175,55,.55) 75%,rgba(167,139,250,.75));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+}
+.cert:hover{background:linear-gradient(180deg,rgba(124,58,237,.14),rgba(124,58,237,.04));box-shadow:0 0 30px rgba(124,58,237,.30),inset 0 1px 0 rgba(255,255,255,.08)}
+.cert-thumb{flex:0 0 auto;width:clamp(3rem,2.6rem + 1.4vw,3.8rem);aspect-ratio:4/5;border-radius:.4rem;overflow:hidden;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.45)}
+.cert-thumb img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.cert-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:.15rem}
+.cert-kicker{font-size:var(--t-micro);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--pl)}
+.cert-title{font-family:var(--serif);font-size:clamp(1rem,.94rem + .3vw,1.2rem);font-weight:700;color:var(--w);line-height:1.25}
+.cert-meta{font-size:var(--t-sm);color:var(--m2);line-height:1.4}
+.cert-cta{flex:0 0 auto;display:inline-flex;align-items:center;gap:.45rem;font-size:var(--t-micro);font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--pl)}
+.cert:hover .cert-cta{color:var(--w)}
+@media(max-width:29.99rem){.cert-cta-txt{display:none}}
+
+.cbox{max-width:52rem}
+.cert-body{padding:clamp(.75rem,.5rem + 1.5vw,1.5rem);background:#0a0a14;display:flex;justify-content:center;align-items:flex-start}
+.cert-body img{width:100%;max-width:46rem;height:auto;border-radius:.4rem;box-shadow:0 10px 40px rgba(0,0,0,.55)}
 </style>
 </head>
 <body>
@@ -954,7 +987,7 @@ a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none}
   </div>
   <div class="intern-count-strip reveal d1">
     <div class="icount-chip"><strong>2</strong>Internships Completed</div>
-    <div class="icount-chip"><strong>4+</strong>Months Experience</div>
+    <div class="icount-chip"><strong>3+</strong>Months Experience</div>
     <div class="icount-chip"><strong>3+</strong>Skills Applied</div>
     <div class="icount-chip"><strong>Remote &amp; On-site</strong>Both formats</div>
   </div>
@@ -970,15 +1003,14 @@ a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none}
           <div class="tc-meta">
             <div class="tc-role-line">
               <span class="tc-role">Logistics &amp; Data Analysis Intern</span>
-              <span class="badge-cur"><span class="badge-dot"></span>Current</span>
             </div>
             <div class="tc-role-line">
-              <span class="period-pill"><span class="period-dot"></span>June 2026 — Present</span>
+              <span class="period-pill"><span class="period-dot"></span>8 – 30 June 2026</span>
             </div>
             <div class="tc-company">Repute Logitech Pvt Ltd · Chennai, India</div>
           </div>
         </div>
-        <p class="tc-desc">Working at Repute Logitech Private Limited across logistics and supply chain operations. Handling Excel-based data reporting, export/import documentation including Bills of Lading and Commercial Invoices, and supporting freight forwarding with customs paperwork. Applying Incoterms in real shipment scenarios while building strong organizational and analytical skills.</p>
+        <p class="tc-desc">Worked at Repute Logitech Private Limited across logistics and supply chain operations. Handled Excel-based data reporting and export/import documentation, including Bills of Lading and Commercial Invoices, and supported freight forwarding with customs paperwork. Applied Incoterms in real shipment scenarios while building strong organizational and analytical skills.</p>
         <div class="tc-highlights">
           <div class="tc-hl"><div class="tc-hl-val">Excel</div><div class="tc-hl-lbl">Reporting &amp; Data</div></div>
           <div class="tc-hl"><div class="tc-hl-val">Trade</div><div class="tc-hl-lbl">Documentation</div></div>
@@ -993,6 +1025,17 @@ a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none}
           <span class="tc-tag">Customs Documentation</span>
           <span class="tc-tag">Supply Chain Ops</span>
         </div>
+
+        <!-- CERTIFICATE (new) -->
+        <button class="cert" type="button" onclick="openCert()" aria-label="View internship completion certificate">
+          <span class="cert-thumb"><img src="repute-certificate.png" alt="" loading="lazy"></span>
+          <span class="cert-info">
+            <span class="cert-kicker">Completion certificate</span>
+            <span class="cert-title">Repute Logitech Private Limited</span>
+          </span>
+          <span class="cert-cta"><span class="cert-cta-txt">View</span><span class="tc-cta-arr">↗</span></span>
+        </button>
+
         <div class="tc-foot">
           <button class="tc-cta" onclick="openIntern(0)">VIEW INTERNSHIP DETAILS <span class="tc-cta-arr">→</span></button>
           <span class="tc-type-badge tc-type-remote">🌐 ON-SITE INTERN</span>
@@ -1056,6 +1099,25 @@ a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none}
       <button class="mnav-btn" id="iPrev">← Previous</button>
       <div class="mdots" id="iDots"></div>
       <button class="mnav-btn" id="iNext">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- CERTIFICATE VIEWER -->
+<div class="moverlay" id="certModal" role="dialog" aria-modal="true" aria-label="Internship completion certificate">
+  <div class="mbox cbox">
+    <div class="mtopbar">
+      <span class="m-counter">Internship certificate · Repute Logitech</span>
+      <div class="ractions">
+        <a href="repute-certificate.png" download class="rdl" aria-label="Download certificate">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="rdl-txt">Download</span>
+        </a>
+        <button class="m-close" id="certClose" aria-label="Close certificate">✕</button>
+      </div>
+    </div>
+    <div class="mbody cert-body">
+      <img src="repute-certificate.png" alt="Internship completion certificate issued by Repute Logitech Private Limited, Chennai, dated 30 June 2026">
     </div>
   </div>
 </div>
@@ -1362,7 +1424,7 @@ a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none}
               <div class="rexp">
                 <div class="rexp-role">Logistics Intern</div>
                 <div class="rexp-co">Repute Logitech Private Limited</div>
-                <div class="rexp-period">June 2026 — Present</div>
+                <div class="rexp-period">8 – 30 June 2026</div>
                 <div class="rexp-desc">
                   Assisted with logistics and supply chain operations,
                   maintained records and documentation using Microsoft Excel,
@@ -1649,8 +1711,8 @@ const INTERNS=[
   {em:'📦',img:'',
     role:'Logistics & Data Analysis Intern',
     company:'Repute Logitech Pvt Ltd · Chennai, India',
-    period:'June 2026 — Present', current:true,
-    desc:'Working at Repute Logitech Private Limited, contributing to day-to-day logistics and supply chain operations. Responsible for data entry, record maintenance, and generating weekly Excel-based reports for management review. Gained working knowledge of export and import documentation including Bills of Lading, Commercial Invoices, and Packing Lists. Applied Incoterms (EXW, FOB, CIF) in real shipment documentation and supported the freight forwarding team with customs-related paperwork. Developed strong attention to detail, organizational discipline, and cross-functional communication skills through hands-on operational exposure.',
+    period:'8 – 30 June 2026', current:false,
+    desc:'Worked at Repute Logitech Private Limited, contributing to day-to-day logistics and supply chain operations. Responsible for data entry, record maintenance, and generating weekly Excel-based reports for management review. Gained working knowledge of export and import documentation including Bills of Lading, Commercial Invoices, and Packing Lists. Applied Incoterms (EXW, FOB, CIF) in real shipment documentation and supported the freight forwarding team with customs-related paperwork. Developed strong attention to detail, organizational discipline, and cross-functional communication skills through hands-on operational exposure.',
     skills:['Microsoft Excel','Export & Import Documentation','Incoterms (EXW / FOB / CIF)','Logistics & Supply Chain','Freight Forwarding','Customs Documentation','Data Entry & Reporting','Business Communication']},
 
   {em:'💻',img:'',
@@ -2001,6 +2063,15 @@ window.closeResume=closeResume;
     document.hidden?stopLoop():startLoop();
   });
 })();
+
+
+/* ── Certificate viewer ── */
+function openCert(){openModal('certModal')}
+document.getElementById('certClose').addEventListener('click',()=>closeModal('certModal'));
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&document.getElementById('certModal').classList.contains('open'))closeModal('certModal');
+});
+window.openCert=openCert;
 </script>
 </body>
 </html>
