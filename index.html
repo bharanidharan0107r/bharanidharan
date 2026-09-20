@@ -793,6 +793,13 @@ a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none}
 .cbox{max-width:52rem}
 .cert-body{padding:clamp(.75rem,.5rem + 1.5vw,1.5rem);background:#0a0a14;display:flex;justify-content:center;align-items:flex-start}
 .cert-body img{width:100%;max-width:46rem;height:auto;border-radius:.4rem;box-shadow:0 10px 40px rgba(0,0,0,.55)}
+
+/* Hero eyebrow on phones: smaller, tighter, clean 2-line break */
+@media(max-width:47.99rem){
+  .hero-eyebrow{font-size:clamp(.62rem,2.9vw,.72rem);letter-spacing:.1em;line-height:1.7}
+  .hero-eyebrow .eb-sep{display:none}
+  .hero-eyebrow .eb-2{display:block}
+}
 </style>
 </head>
 <body>
@@ -832,7 +839,7 @@ a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none}
         <span class="status-dot"></span>
         Open to internships &amp; opportunities
       </div>
-      <div class="hero-eyebrow">Supply Chain &amp; Logistics Technology | DIGITAL SOLUTIONS</div>
+      <div class="hero-eyebrow">Supply Chain &amp; Logistics Technology <span class="eb-sep">|</span> <span class="eb-2">Digital Solutions</span></div>
       <h1>
         Building digital solutions<br>
         <span class="italic-accent">for smarter Supply chains</span>
