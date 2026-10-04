@@ -1200,6 +1200,65 @@ a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none}
 }
 
 
+/* ===== What I Build: horizontal active-card carousel ===== */
+.svc-carousel{width:min(100%,var(--container));margin-inline:auto}
+.svc-viewport{overflow:hidden;padding-block:.9rem;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.svc-viewport.dragging{cursor:grabbing}
+
+.svc-track{display:flex;gap:var(--gap);transition:transform .6s var(--eout);will-change:transform}
+.svc-track.dragging{transition:none}
+.svc-track.dragging .svc-slide{transition:none}
+
+/* the slide is only a positioning wrapper; the card inside keeps its own design */
+.svc-slide{
+  --s-min:.82;--o-min:.65;
+  flex:0 0 min(86%,26rem);min-width:0;display:flex;
+  transform:scale(var(--s-min));opacity:var(--o-min);
+  transition:transform .6s var(--eout),opacity .6s var(--eout);
+}
+.svc-slide>.svc-card{flex:1;min-width:0}
+.svc-slide.is-active{transform:scale(1);opacity:1}
+.svc-slide:focus-visible{outline:2px solid var(--pl);outline-offset:4px;border-radius:var(--rl)}
+
+@media(min-width:42rem){
+  .svc-slide{flex-basis:clamp(18rem,48%,22rem)}   /* tablet: about the old 2-column card width */
+}
+@media(min-width:64rem){
+  .svc-slide{flex-basis:clamp(20rem,31.5%,24rem)} /* laptop/desktop: about the old 3-column card width */
+}
+
+@media(prefers-reduced-motion:reduce){
+  .svc-track,.svc-slide{transition-duration:.001ms!important}
+}
+
+/* What I Build: active card uses the existing hover glow (same values, nothing new) */
+.svc-slide.is-active .svc-card{border-color:rgba(255,255,255,.3);box-shadow:0 18px 52px rgba(0,0,0,.35)}
+.svc-slide.is-active .svc-card::before{transform:scaleX(1)}
+.svc-slide.is-active .svc-card .svc-icon{background:var(--p2);box-shadow:0 0 26px var(--pg);border-color:var(--pl);transform:scale(1.08) rotate(-7deg)}
+
+
+/* What I Build: subtle drag hint in the empty left area (laptop/tablet/desktop only) */
+.svc-carousel{position:relative}
+.svc-drag-hint{display:none}
+
+@media(min-width:42rem){
+  .svc-drag-hint{
+    display:flex;align-items:center;justify-content:center;
+    position:absolute;top:0;bottom:0;left:0;
+    width:calc((100% - clamp(18rem,48%,22rem))/2);
+    padding-inline:1rem;
+    font-family:var(--mono);font-size:var(--t-micro);
+    letter-spacing:.22em;text-transform:uppercase;white-space:nowrap;
+    color:var(--m2);
+    pointer-events:none;
+    opacity:0;transition:opacity .4s var(--ease);
+  }
+  /* visible only while the first card is active (that is when the left side is empty) */
+  .svc-carousel:has(.svc-slide:first-child.is-active) .svc-drag-hint{opacity:1}
+}
+@media(min-width:64rem){
+  .svc-drag-hint{width:calc((100% - clamp(20rem,31.5%,24rem))/2)}
+}
 </style>
 </head>
 <body>
@@ -1648,44 +1707,51 @@ a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none}
     <div class="divider"></div>
     <p>Practical skills. Real-world solutions</p>
   </div>
-  <div class="svc-grid">
+      <div class="svc-carousel reveal">
+    <div class="svc-viewport" id="svcViewport" role="region" aria-roledescription="carousel" aria-label="What I build. Drag or swipe left and right.">
+      <div class="svc-track" id="svcTrack">
 
-    <div class="svc-card reveal">
-      <div class="svc-icon">🚚</div>
-      <h3>Supply Chain &amp; Logistics Technology</h3>
-      <p>Building digital solutions for inventory, wholesale, shipment tracking, and logistics workflows.</p>
-    </div>
+        <article class="svc-card">
+          <div class="svc-icon">🚚</div>
+          <h3>Supply Chain &amp; Logistics Technology</h3>
+          <p>Building digital solutions for inventory, wholesale, shipment tracking, and logistics workflows.</p>
+        </article>
 
-    <div class="svc-card reveal d1">
-      <div class="svc-icon">📊</div>
-      <h3>Data &amp; Business Tools</h3>
-      <p>Working with Excel, SQL, and Power BI to support technology-driven business and logistics workflows.</p>
-    </div>
+        <article class="svc-card">
+          <div class="svc-icon">📊</div>
+          <h3>Data &amp; Business Tools</h3>
+          <p>Working with Excel, SQL, and Power BI to support technology-driven business and logistics workflows.</p>
+        </article>
 
-    <div class="svc-card reveal d2">
-      <div class="svc-icon">💻</div>
-      <h3>Technology &amp; Digital Solutions</h3>
-      <p>Developing practical web solutions that address real-world business and operational needs.</p>
-    </div>
+        <article class="svc-card">
+          <div class="svc-icon">💻</div>
+          <h3>Technology &amp; Digital Solutions</h3>
+          <p>Developing practical web solutions that address real-world business and operational needs.</p>
+        </article>
 
-    <div class="svc-card reveal">
-      <div class="svc-icon">🤖</div>
-      <h3>AI-Assisted Development</h3>
-      <p>Using AI tools to support coding, debugging, problem-solving, and faster development workflows.</p>
-    </div>
+        <article class="svc-card">
+          <div class="svc-icon">🤖</div>
+          <h3>AI-Assisted Development</h3>
+          <p>Using AI tools to support coding, debugging, problem-solving, and faster development workflows.</p>
+        </article>
 
-    <div class="svc-card reveal d1">
-      <div class="svc-icon">🎨</div>
-      <h3>UI/UX — Basic</h3>
-      <p>Creating clean interfaces and basic user flows using Figma, wireframing, and prototyping.</p>
-    </div>
+        <article class="svc-card">
+          <div class="svc-icon">🎨</div>
+          <h3>UI/UX — Basic</h3>
+          <p>Creating clean interfaces and basic user flows using Figma, wireframing, and prototyping.</p>
+        </article>
 
-    <div class="svc-card reveal d2">
-      <div class="svc-icon">💡</div>
-      <h3>Digital Product Development</h3>
-      <p>Turning real-world business ideas into practical digital products from concept to implementation.</p>
+        <article class="svc-card">
+          <div class="svc-icon">💡</div>
+          <h3>Digital Product Development</h3>
+          <p>Turning real-world business ideas into practical digital products from concept to implementation.</p>
+        </article>
+
+      </div>
     </div>
+    <div class="svc-drag-hint" aria-hidden="true">← Drag to explore →</div>
   </div>
+</section>
 </section>
 
 <!-- CONTACT -->
@@ -2713,6 +2779,116 @@ window.openCert=openCert;
   });
 
   updateCount();
+})();
+
+/* ── What I Build: horizontal active-card carousel ── */
+(()=>{
+  const vp=document.getElementById('svcViewport'),track=document.getElementById('svcTrack');
+  if(!vp||!track)return;
+
+  /* wrap each existing card so scale/opacity never touch the card's own styles */
+  [...track.children].forEach(card=>{
+    if(card.tagName==='ARTICLE'){
+      const wrap=document.createElement('div');
+      wrap.className='svc-slide';
+      card.classList.remove('svc-slide');
+      track.insertBefore(wrap,card);
+      wrap.appendChild(card);
+    }
+  });
+  const slides=[...track.querySelectorAll('.svc-slide')];
+  const N=slides.length;
+  const SMIN=.82,OMIN=.65;
+  let i=0,startX=0,dx=0,drag=false,downSlide=null;
+
+  slides.forEach((s,k)=>{
+    s.setAttribute('role','group');
+    s.setAttribute('aria-roledescription','slide');
+    s.setAttribute('aria-label',(k+1)+' of '+N);
+    s.tabIndex=0;
+    /* keyboard user tabs onto a card -> it becomes active; Enter/Space also selects */
+    s.addEventListener('focus',()=>{vp.scrollLeft=0;go(k)});
+    s.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go(k)}});
+  });
+
+  function metrics(){
+    const w=vp.clientWidth,sw=slides[0].offsetWidth;
+    const gap=parseFloat(getComputedStyle(track).columnGap)||0;
+    return{w,sw,step:sw+gap};
+  }
+  const base=n=>{const m=metrics();return(m.w-m.sw)/2-n*m.step};
+  const paint=extra=>{track.style.transform='translateX('+(base(i)+(extra||0))+'px)'};
+
+  /* while dragging: scale/opacity follow the finger, based on distance from centre */
+  function follow(){
+    const f=i-dx/metrics().step;
+    slides.forEach((s,k)=>{
+      const t=Math.min(1,Math.abs(k-f));
+      s.style.transform='scale('+(1-(1-SMIN)*t)+')';
+      s.style.opacity=1-(1-OMIN)*t;
+    });
+  }
+  function clearInline(){slides.forEach(s=>{s.style.transform='';s.style.opacity=''})}
+
+  function go(n){
+    i=Math.max(0,Math.min(N-1,n));
+    track.classList.remove('dragging');
+    clearInline();
+    paint(0);
+    slides.forEach((s,k)=>{
+      s.classList.toggle('is-active',k===i);
+      s.setAttribute('aria-current',k===i?'true':'false');
+    });
+  }
+
+  /* Pointer Events: mouse + touch + pen. touch-action:pan-y keeps vertical page scroll working. */
+  vp.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='mouse'&&e.button!==0)return;
+    drag=true;startX=e.clientX;dx=0;
+    downSlide=e.target.closest('.svc-slide');
+    track.classList.add('dragging');vp.classList.add('dragging');
+    try{vp.setPointerCapture(e.pointerId)}catch(_){}
+  });
+  vp.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    dx=e.clientX-startX;
+    if((i===0&&dx>0)||(i===N-1&&dx<0))dx*=.35;   /* soft resistance at the ends */
+    paint(dx);follow();
+  });
+  function end(){
+    if(!drag)return;
+    drag=false;vp.classList.remove('dragging');
+    const th=Math.min(80,metrics().step*.2);        /* swipe threshold */
+    if(dx<-th)go(i+1);
+    else if(dx>th)go(i-1);
+    else if(Math.abs(dx)<6&&downSlide&&slides.indexOf(downSlide)!==i)go(slides.indexOf(downSlide)); /* tap a side card */
+    else go(i);
+  }
+  vp.addEventListener('pointerup',end);
+  vp.addEventListener('pointercancel',end);
+  vp.addEventListener('dragstart',e=>e.preventDefault());
+
+  /* trackpad horizontal gesture; vertical wheel still scrolls the page */
+  let acc=0,lock=false;
+  vp.addEventListener('wheel',e=>{
+    if(Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;
+    e.preventDefault();
+    if(lock)return;
+    acc+=e.deltaX;
+    if(Math.abs(acc)>60){go(i+(acc>0?1:-1));acc=0;lock=true;setTimeout(()=>{lock=false},550)}
+  },{passive:false});
+
+  /* arrow keys */
+  vp.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'){e.preventDefault();go(i+1);slides[i].focus({preventScroll:true})}
+    if(e.key==='ArrowLeft'){e.preventDefault();go(i-1);slides[i].focus({preventScroll:true})}
+  });
+
+  /* recalculate on resize / rotate / browser zoom */
+  const refit=()=>{track.style.transition='none';go(i);requestAnimationFrame(()=>{track.style.transition=''})};
+  if('ResizeObserver' in window)new ResizeObserver(refit).observe(vp);
+  else window.addEventListener('resize',refit);
+  go(0);
 })();
 
 </script>
